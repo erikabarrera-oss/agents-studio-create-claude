@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "agents-studio": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://api-prod.studio.getsupervisor.ai/v1/mcp/sse",
+        "--header",
+        "x-api-key: ${MCP_API_KEY}"
+      ],
+      "env": {
+        "MCP_API_KEY": "sk_prod_e9aa48dcd6113fa197f1765045730ad880f3891a8b778d1c39bfaa5b4c54eacd",
+        "NODE_ENV": "/usr/local/bin/node"
+      }
+    }
+  }
+}
