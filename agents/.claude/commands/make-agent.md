@@ -248,9 +248,23 @@ PASO 3: agent_versions_create(agent_id)
 PASO 4: agent_version_instructions_create(version_id, prompt)
 → Inserta el prompt completo del documento (sección "Instrucciones del Agente").
 
-PASO 5: agent_stages_create (uno por cada stage de la tabla)
-→ Crea los stages en el orden definido en el documento.
+PASO 5: agent_stages_list → revisar stages heredados del template
+→ El fork de una plantilla hereda stages que NO corresponden al nuevo agente.
+→ REGLA CRÍTICA: Solo debe existir UN workflow — el del agente que se está creando.
+→ Identifica cuáles stages son del template original (no coinciden con la tabla del documento).
+→ Elimínalos todos con agent_stages_delete ANTES de continuar.
+→ Luego crea los stages del documento con agent_stages_create en el orden definido.
 → Guarda el stage_id de cada uno.
+→ REGLA CRÍTICA DE TRIGGERS: Al crear cada stage, incluir MÁXIMO UN trigger por stage de destino.
+  Si varias condiciones llevan al mismo siguiente stage, consolídalas en una sola condición
+  (ej. "Agendamiento concluye: cita confirmada, sin horario disponible, o candidato rechaza").
+  Crear múltiples triggers con el mismo nextStageName genera duplicados visuales irremovibles en la UI.
+→ REGLA DE BIDIRECCIONALIDAD (Atención a Clientes): Para agentes de plantilla "Atención a Clientes",
+  los stages de contenido deben ser bidireccionales: cada stage debe tener un trigger hacia cada
+  uno de los otros stages de contenido (excluyendo Bienvenida y Cierre), con condición del tipo
+  "El interlocutor cambia de necesidad y [nueva intención]". Esto permite que el cliente resuelva
+  múltiples consultas en una misma llamada sin quedar atrapado en un flujo lineal.
+  Usa agent_stage_triggers_create en PASO 6 para agregar estos triggers cruzados después de crear los stages.
 
 PASO 6: agent_stage_triggers_create (uno por cada trigger de la tabla)
 → Usa los stage_id del paso anterior para referenciar origen y destino.

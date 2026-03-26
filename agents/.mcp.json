@@ -9,7 +9,7 @@
         "x-api-key: ${MCP_API_KEY}"
       ],
       "env": {
-        "MCP_API_KEY": "sk_prod_e9aa48dcd6113fa197f1765045730ad880f3891a8b778d1c39bfaa5b4c54eacd",
+        "MCP_API_KEY": "sk_prod_0cf1663e73e438b7ff06cf55f601357d2e5f8a3db380393eab49ac351aaed3b0",
         "NODE_ENV": "/usr/local/bin/node"
       }
     }
